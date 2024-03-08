@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import { useInput } from '../hooks/useInput'
 import { download } from '../utils/helpers'
-import { isValidYouTubeUrl } from '../utils/validation'
 import Button from './UI/Button'
 import Input from './UI/Input'
 import useTimeout from '../hooks/useTimeout'
@@ -13,7 +12,7 @@ const Form = ({ handleUrlChange }: { handleUrlChange: (url: string) => void }) =
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   const [success, setSuccess] = useState<boolean>(false)
-  const linkUrl = useInput((link: string) => isValidYouTubeUrl(link))
+  const linkUrl = useInput((link: string) => link.trim() !== '')
 
   const [clearError] = useTimeout(() => {
     setError(null)
@@ -31,7 +30,7 @@ const Form = ({ handleUrlChange }: { handleUrlChange: (url: string) => void }) =
   useClickOutside(modalRef, handleClickOutside)
 
   const handleSubmit = async (url: string, format: string) => {
-    if (loading || linkUrl.hasError || !isValidYouTubeUrl(url) || linkUrl.value.trim() === '') {
+    if (loading || linkUrl.hasError || linkUrl.value.trim() === '') {
       return
     }
 

@@ -1,17 +1,16 @@
 import Form from './components/Form'
 import youtube from './assets/images/youtube-svg-logo.svg'
 import { useLocalStorage } from './hooks/useLocalStorage'
-import { isValidYouTubeUrl } from './utils/validation'
 
 const App = () => {
   const [videoId, setVideoId] = useLocalStorage('videoID', '')
   const [youtubeURL, setYoutubeURL] = useLocalStorage('youtubeURL', '')
   const handleUrlChange = (url: string) => {
-    if (!url || !isValidYouTubeUrl(url) || url === youtubeURL) return
-    setYoutubeURL(url)
+    if (!url || url === youtubeURL) return
     const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^\s&]+)/)
     if (videoIdMatch) {
       setVideoId(videoIdMatch[1])
+      setYoutubeURL(url)
     }
   }
   return (
