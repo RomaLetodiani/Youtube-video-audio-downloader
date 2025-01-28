@@ -1,9 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const ytdl = require('ytdl-core');
-const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+const express = require("express");
+const bodyParser = require("body-parser");
+const ytdl = require("@distube/ytdl-core");
+const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 app.use(cors());
@@ -19,16 +19,16 @@ const ensureDirectoryExists = (filePath) => {
   }
 };
 
-app.post('/download', async (req, res) => {
+app.post("/download", async (req, res) => {
   try {
     const { url, format } = req.body;
 
     if (!url || !format) {
-      return res.status(400).json({ error: 'YouTube URL and format is required' });
+      return res.status(400).json({ error: "YouTube URL and format is required" });
     }
 
-    if (format != 'mp3' && format != 'mp4') {
-      return res.status(400).json({ error: 'Format should be mp3 or mp4' });
+    if (format != "mp3" && format != "mp4") {
+      return res.status(400).json({ error: "Format should be mp3 or mp4" });
     }
 
     // Get video info
@@ -36,18 +36,18 @@ app.post('/download', async (req, res) => {
 
     let filePath;
     let stream;
-    if (format == 'mp3') {
+    if (format == "mp3") {
       // Set up file path for MP3
-      filePath = path.join(__dirname, 'Downloads', `${info.videoDetails.videoId}.mp3`);
+      filePath = path.join(__dirname, "Downloads", `${info.videoDetails.videoId}.mp3`);
 
       // Download audio in MP3 format
-      stream = ytdl(url, { filter: 'audioonly', quality: 'highestaudio' });
-    } else if (format == 'mp4') {
+      stream = ytdl(url, { filter: "audioonly", quality: "highestaudio" });
+    } else if (format == "mp4") {
       // Set up file path for MP4
-      filePath = path.join(__dirname, 'Downloads', `${info.videoDetails.videoId}.mp4`);
+      filePath = path.join(__dirname, "Downloads", `${info.videoDetails.videoId}.mp4`);
 
       // Download video in MP4 format
-      stream = ytdl(url, { quality: 'highestvideo', filter: 'videoandaudio' });
+      stream = ytdl(url, { quality: "highestvideo", filter: "videoandaudio" });
     }
 
     // Ensure the directory exists
@@ -55,12 +55,12 @@ app.post('/download', async (req, res) => {
 
     stream.pipe(fs.createWriteStream(filePath));
 
-    stream.on('finish', () => {
-      res.status(200).json({ message: 'Download successful' });
+    stream.on("finish", () => {
+      res.status(200).json({ message: "Download successful" });
     });
   } catch (error) {
-    console.error('Error downloading:', error);
-    res.status(500).json({ error: 'Error downloading' });
+    console.error("Error downloading:", error);
+    res.status(500).json({ error: "Error downloading" });
   }
 });
 

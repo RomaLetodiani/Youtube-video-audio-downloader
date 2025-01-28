@@ -21,7 +21,7 @@ If you prefer to manually host both the frontend and backend of the YouTube Vide
 4. **Host the Frontend:**
    - Host the frontend code using vite:
      ```
-     npm run dev
+     npm start
      ```
 5. **Navigate to the Backend Directory:**
    - Navigate to the directory containing the backend code:
